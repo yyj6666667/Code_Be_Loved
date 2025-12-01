@@ -25,16 +25,17 @@ public class ProductorConsumer {
             while (true) {
                 synchronized (buffer) {
                     String curName = Thread.currentThread().getName();
+                    System.out.println("生产者：");
                     while (buffer.size() == maxLength) {
-                        System.out.println("满了，当前线程wait,苦了" + curName);
+                        System.out.println("  满了，当前线程wait,苦" + curName);
                         try{
                         buffer.wait();//wait() 的作用就是让已经拿到锁的线程主动暂停，并且释放锁,进入对应锁的专属的等待队列
                         //wait过后，thread重新竞争上锁了，会从之前wait的地方继续执
                         } catch (InterruptedException e) {}
-                        System.out.println("我胡汉三又拿到锁开始霍霍了");
+                        System.out.println("  我"+ curName +"又拿到锁开始霍霍了");
                     }
                     int addSize = 1;
-                    System.out.print("加了 ");
+                    System.out.print("加了 |");
                     buffer.add(1);
                     buffer.notifyAll();
                 }
@@ -53,11 +54,12 @@ public class ProductorConsumer {
             while(true) {
                 int takeSize = 3;
                 synchronized (buffer) {
+                    System.out.println("消费者");
                     while(buffer.size() < takeSize) {
-                        System.out.println("空了没法拿了");
+                        System.out.println("  空了没法拿");
                         try{
                         buffer.wait();} catch (InterruptedException e) {}
-                        System.out.println("又添了些，可以开始拿了");
+                        System.out.println("  又添了些，可以开始拿了");
                     }
                     System.out.print("拿！ |");
                     for (int i = 0; i < takeSize; i++) {

@@ -14,7 +14,7 @@ public class EagerSingleton {
 
 public class LazySingleton {
     private static Lazysingleton instance = null;
-    private LazySingleton() {}
+    private LazySingleton() {};
     public static synchronized LazySingleton getInstance () {
         if (instance == null) {
             instance = new LazySingleton();
